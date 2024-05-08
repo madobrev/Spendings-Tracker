@@ -1,10 +1,6 @@
 package apps.SpendingTracker.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -17,7 +13,12 @@ public class Expense {
     private double amount;
     private String description;
     private LocalDate date;
+    
+    @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private Account account;
 
     public long getId() {

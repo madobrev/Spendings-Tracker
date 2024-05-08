@@ -3,18 +3,30 @@ package apps.SpendingTracker.services;
 import apps.SpendingTracker.models.Account;
 import apps.SpendingTracker.repositories.AccountRepository;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AccountService {
+    private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
     private final AccountRepository accountRepository;
 
     public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
 
-    public void login() {
-        //Check if the user exists in the db and password matches.
+    public boolean login(String username, String password) {
+        Optional<Account> optionalAccount = accountRepository.findByUsername(username);
+        if (optionalAccount.isPresent()) {
+            Account account = optionalAccount.get();
+            return password.equals(account.getPassword());
+        } else {
+            return false;
+        }
+
     }
 
     @Transactional

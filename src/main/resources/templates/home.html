@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Home Page</title>
@@ -16,6 +16,7 @@
         <a href="/register">
             <button type="button">Register</button>
         </a>
+        <div style="color: red;" th:if="${logError != null}"><span th:text="${logError}"></span></div>
     </form>
 </div>
 </body>
