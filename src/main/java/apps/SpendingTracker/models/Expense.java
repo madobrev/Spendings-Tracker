@@ -9,16 +9,21 @@ import java.time.LocalDate;
 public class Expense {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "expense_id")
     private long id;
+    @Column(name = "amount")
     private double amount;
+    @Column(name = "description")
     private String description;
+    @Column(name = "date")
     private LocalDate date;
-    
+
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category", referencedColumnName = "category_id")
     private Category category;
+
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "account", referencedColumnName = "user_id")
     private Account account;
 
     public long getId() {

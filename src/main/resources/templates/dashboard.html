@@ -1,10 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
 </head>
 <body>
+<div id="header">
+    <!-- TODO: CHANGE from hardcoded to fetching username from session-->
+    <h1>Welcome, <span id="username">username</span>!</h1>
+    <form id="monthForm">
+        <label for="month">Select Month:</label>
+        <select id="month" name="month">
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
 
+        </select>
+        <button type="submit">Change</button>
+    </form>
+</div>
+<div id="expenses">
+    <h2>Expenses</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="expense : ${expenses}">
+            <td th:text="${expense.date}"></td>
+            <td th:text="${expense.category.name}"></td>
+            <td th:text="${expense.amount}"></td>
+            <td th:text="${expense.description}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <a href="/new_expense">
+        <button type="button">Add Expense</button>
+    </a>
+</div>
 </body>
 </html>

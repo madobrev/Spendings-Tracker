@@ -8,8 +8,10 @@ import jakarta.persistence.*;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "category_id")
     private long id;
 
+    @Column(name = "category")
     private String name;
 
     public long getId() {
