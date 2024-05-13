@@ -26,6 +26,15 @@ public class Expense {
     @JoinColumn(name = "account", referencedColumnName = "user_id")
     private Account account;
 
+    public Expense(double amount, String description, LocalDate date) {
+        this.amount = amount;
+        this.description = description;
+        this.date = date;
+    }
+
+    public Expense() {
+    }
+
     public long getId() {
         return id;
     }

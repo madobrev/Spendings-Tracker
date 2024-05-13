@@ -6,21 +6,28 @@
 </head>
 <body>
 <div id="header">
-    <!-- TODO: CHANGE from hardcoded to fetching username from session-->
-    <h1>Welcome, <span id="username">username</span>!</h1>
-    <form id="monthForm">
+    <h1>Welcome, <span th:text="${username}"></span>!</h1>
+    <form action="/changeMonth" id="monthForm" method="post">
         <label for="month">Select Month:</label>
         <select id="month" name="month">
             <option value="1">January</option>
             <option value="2">February</option>
             <option value="3">March</option>
-
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
         </select>
         <button type="submit">Change</button>
     </form>
 </div>
 <div id="expenses">
-    <h2>Expenses</h2>
+    <h2>Expenses - <span th:text="${month}"></span></h2>
     <table>
         <thead>
         <tr>
@@ -32,7 +39,7 @@
         </thead>
         <tbody>
         <tr th:each="expense : ${expenses}">
-            <td th:text="${expense.date}"></td>
+            <td th:text="${#temporals.format(expense.date, 'dd.MM.yyyy')}"></td>
             <td th:text="${expense.category.name}"></td>
             <td th:text="${expense.amount}"></td>
             <td th:text="${expense.description}"></td>

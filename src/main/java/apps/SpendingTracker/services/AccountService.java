@@ -14,7 +14,6 @@ import java.util.Optional;
 public class AccountService {
     private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
     private final AccountRepository accountRepository;
-
     private final HttpSession httpSession;
 
     public AccountService(AccountRepository accountRepository, HttpSession httpSession) {

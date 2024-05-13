@@ -27,6 +27,7 @@ public class AccountController {
         boolean isLoginSuccessful = accountService.login(username, password);
 
         if (isLoginSuccessful) {
+            // model.addAttribute("username", username);
             return "redirect:/dashboard";
         } else {
             redirectAttributes.addFlashAttribute("logError", "Invalid username or password!");

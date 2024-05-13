@@ -6,19 +6,24 @@
 </head>
 <body>
 <h1>Add New Expense</h1>
-<form action="/dashboard" method="post">
+<form action="/addExpense" method="post">
     <label for="date">Date:</label>
     <input id="date" name="date" required type="date"><br><br>
 
     <label for="amount">Amount:</label>
-    <input id="amount" min="0" name="amount" required step="0.01" type="number"><br><br>
+    <input id="amount" min="0" name="amount" type="number"><br><br>
 
     <label for="category">Category:</label>
     <select id="category" name="category" required>
-        <!-- TODO: CHANGE from hardcoded to fetching them from the DB-->
         <option value="Food">Food</option>
+        <option value="Household">Household</option>
         <option value="Transportation">Transportation</option>
-        <option value="Utilities">Utilities</option>
+        <option value="Bills">Bills</option>
+        <option value="Social Life">Social Life</option>
+        <option value="Health">Health</option>
+        <option value="Gift">Gift</option>
+        <option value="Clothes">Clothes</option>
+        <option value="Beauty">Beauty</option>
     </select><br><br>
 
     <label for="description">Description:</label><br>
