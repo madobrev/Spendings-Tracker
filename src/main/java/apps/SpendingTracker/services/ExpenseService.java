@@ -5,6 +5,7 @@ import apps.SpendingTracker.models.Account;
 import apps.SpendingTracker.models.Category;
 import apps.SpendingTracker.models.Expense;
 import apps.SpendingTracker.repositories.ExpenseRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -41,4 +42,12 @@ public class ExpenseService {
         category.ifPresent(expense::setCategory);
         expenseRepository.save(expense);
     }
+
+    @Transactional
+    public void deleteExpenses(List<Long> expenseIDs) {
+        for (Long expenseID : expenseIDs) {
+            expenseRepository.deleteById(expenseID);
+        }
+    }
+
 }

@@ -5,10 +5,13 @@ import apps.SpendingTracker.services.ExpenseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Controller
 public class ExpenseController {
@@ -30,6 +33,13 @@ public class ExpenseController {
 
         Expense newExpense = new Expense(amount, description, date);
         expenseService.addExpense(newExpense, category);
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/deleteExpenses")
+    public String deleteExpenses(@RequestBody List<Long> expenseIds, Model model) {
+
+        expenseService.deleteExpenses(expenseIds);
         return "redirect:/dashboard";
     }
 }

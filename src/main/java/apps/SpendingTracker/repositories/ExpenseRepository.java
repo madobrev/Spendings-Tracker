@@ -21,4 +21,5 @@ public interface ExpenseRepository extends CrudRepository<Expense, Long> {
     @Query("DELETE FROM Expense e WHERE e.account.id = :accountId")
     void deleteAllUserExpenses(Long accountId);
 
+
 }
