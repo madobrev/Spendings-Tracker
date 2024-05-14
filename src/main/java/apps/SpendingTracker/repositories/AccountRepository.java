@@ -16,4 +16,9 @@ public interface AccountRepository extends CrudRepository<Account, Long> {
     @Query("UPDATE Account a SET a.password = :newPassword WHERE a.username = :username")
     void changePassword(String username, String newPassword);
 
+    @Modifying
+    @Query("DELETE FROM Account a WHERE a.username = :username")
+    void deleteUser(String username);
+
+
 }

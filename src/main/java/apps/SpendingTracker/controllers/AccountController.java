@@ -63,7 +63,7 @@ public class AccountController {
         return new ModelAndView("redirect:/home");
     }
 
-    @PostMapping("/changePassword")
+    @PostMapping("/changePassword")// TODO: Change to public String?
     public ModelAndView changePassword(@RequestParam("oldPassword") String oldPassword,
                                        @RequestParam("newPassword") String newPassword,
                                        @RequestParam("repeatPassword") String repeatPassword,
@@ -84,10 +84,24 @@ public class AccountController {
         return new ModelAndView("redirect:/dashboard");
     }
 
-    @RequestMapping("/deleteAccount")
-    public String deleteAccount() {
+    @RequestMapping("/deleteAccount") // TODO: Change to public String?
+    public ModelAndView deleteAccount(@RequestParam("password") String password,
+                                      @RequestParam("repeatPassword") String repeatPassword,
+                                      Model model) {
+
+        if (!accountService.checkIfCurrentPasswordIsCorrect(password)) {
+            model.addAttribute("errorMessage", "Incorrect old password");
+            return new ModelAndView("redirect:/showDeleteAccountPage");
+        }
+
+        if (!accountService.checkIfPasswordsMatch(password, repeatPassword)) {
+            model.addAttribute("errorMessage", "Passwords do not match");
+            return new ModelAndView("redirect:/showDeleteAccountPage");
+        }
+
+
         accountService.deleteAccount();
-        return "redirect:/home";
+        return new ModelAndView("redirect:/home");
     }
 
 

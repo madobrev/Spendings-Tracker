@@ -2,6 +2,7 @@ package apps.SpendingTracker.repositories;
 
 
 import apps.SpendingTracker.models.Expense;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -16,5 +17,8 @@ public interface ExpenseRepository extends CrudRepository<Expense, Long> {
     @Query("SELECT e FROM Expense e WHERE e.account.id = :accountId AND MONTH(e.date) = :month ORDER BY e.date ASC")
     Optional<List<Expense>> getExpensesByUserAndMonth(Long accountId, int month);
 
+    @Modifying
+    @Query("DELETE FROM Expense e WHERE e.account.id = :accountId")
+    void deleteAllUserExpenses(Long accountId);
 
 }

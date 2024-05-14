@@ -2,6 +2,7 @@ package apps.SpendingTracker.services;
 
 import apps.SpendingTracker.models.Account;
 import apps.SpendingTracker.repositories.AccountRepository;
+import apps.SpendingTracker.repositories.ExpenseRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -15,11 +16,14 @@ import java.util.Optional;
 public class AccountService {
     private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
     private final AccountRepository accountRepository;
+    private final ExpenseRepository expenseRepository;
     private final HttpSession httpSession;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public AccountService(AccountRepository accountRepository, HttpSession httpSession) {
+
+    public AccountService(AccountRepository accountRepository, ExpenseRepository expenseRepository, HttpSession httpSession) {
         this.accountRepository = accountRepository;
+        this.expenseRepository = expenseRepository;
         this.httpSession = httpSession;
     }
 
@@ -72,6 +76,14 @@ public class AccountService {
 
     @Transactional
     public void deleteAccount() {
+        String username = (String) httpSession.getAttribute("username");
+        Optional<Account> account = accountRepository.findByUsername(username);
 
+        if (account.isPresent()) {
+            Account currentAccount = account.get();
+            Long accountID = currentAccount.getId();
+            expenseRepository.deleteAllUserExpenses(accountID);
+            accountRepository.deleteUser(username);
+        }
     }
 }
