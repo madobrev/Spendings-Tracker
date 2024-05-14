@@ -57,15 +57,20 @@ public class WebPageController {
         return "redirect:/dashboard?month=" + month;
     }
 
-    @RequestMapping("/logout")
-    public ModelAndView logout() {
-        httpSession.setAttribute("username", null);
-        return new ModelAndView("redirect:/home");
-    }
 
     @GetMapping("/new_expense")
     public String showNewExpenseForm(Model model) {
         return "new_expense";
+    }
+
+    @RequestMapping("/showDeleteAccountPage")
+    public String deleteAccount() {
+        return "delete_account";
+    }
+
+    @RequestMapping("/showChangePasswordPage")
+    public String changePassword() {
+        return "change_password";
     }
 
 }

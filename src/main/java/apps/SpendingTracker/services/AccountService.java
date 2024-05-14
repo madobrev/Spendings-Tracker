@@ -52,10 +52,25 @@ public class AccountService {
     }
 
 
-    public void updatePassword() {
-
+    public boolean checkIfCurrentPasswordIsCorrect(String password) {
+        String username = (String) httpSession.getAttribute("username");
+        Optional<Account> loggedAccount = accountRepository.findByUsername(username);
+        return loggedAccount.filter(account -> passwordEncoder.matches(password, account.getPassword())).isPresent();
     }
 
+    public boolean checkIfPasswordsMatch(String password1, String password2) {
+        return password1.equals(password2);
+    }
+
+
+    @Transactional
+    public void changePassword(String newPassword) {
+        String username = (String) httpSession.getAttribute("username");
+        String hashedPassword = passwordEncoder.encode(newPassword);
+        accountRepository.changePassword(username, hashedPassword);
+    }
+
+    @Transactional
     public void deleteAccount() {
 
     }

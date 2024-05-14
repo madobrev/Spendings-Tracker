@@ -32,7 +32,6 @@ public class AccountController {
         boolean isLoginSuccessful = accountService.login(username, password);
 
         if (isLoginSuccessful) {
-            // model.addAttribute("username", username);
             return "redirect:/dashboard";
         } else {
             redirectAttributes.addFlashAttribute("logError", "Invalid username or password!");
@@ -47,10 +46,12 @@ public class AccountController {
                            Model model) {
         logger.info("Attempting to register user: {}", username);
 
-        if (!password.equals(repeatPassword)) {
+        if (!accountService.checkIfPasswordsMatch(password, repeatPassword)) {
             model.addAttribute("errorMessage", "Passwords do not match");
             return "register";
         }
+
+        //TODO: add username check
 
         accountService.register(username, password);
         return "redirect:/home";
@@ -60,6 +61,33 @@ public class AccountController {
     public ModelAndView logout() {
         httpSession.setAttribute("username", null);
         return new ModelAndView("redirect:/home");
+    }
+
+    @PostMapping("/changePassword")
+    public ModelAndView changePassword(@RequestParam("oldPassword") String oldPassword,
+                                       @RequestParam("newPassword") String newPassword,
+                                       @RequestParam("repeatPassword") String repeatPassword,
+                                       Model model) {
+
+
+        if (!accountService.checkIfCurrentPasswordIsCorrect(oldPassword)) {
+            model.addAttribute("errorMessage", "Incorrect old password");
+            return new ModelAndView("redirect:/showChangePasswordPage");
+        }
+
+        if (!accountService.checkIfPasswordsMatch(newPassword, repeatPassword)) {
+            model.addAttribute("errorMessage", "Passwords do not match");
+            return new ModelAndView("redirect:/showChangePasswordPage");
+        }
+
+        accountService.changePassword(newPassword);
+        return new ModelAndView("redirect:/dashboard");
+    }
+
+    @RequestMapping("/deleteAccount")
+    public String deleteAccount() {
+        accountService.deleteAccount();
+        return "redirect:/home";
     }
 
 
