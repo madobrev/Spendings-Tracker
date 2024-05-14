@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,6 +16,7 @@ public class AccountService {
     private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
     private final AccountRepository accountRepository;
     private final HttpSession httpSession;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public AccountService(AccountRepository accountRepository, HttpSession httpSession) {
         this.accountRepository = accountRepository;
@@ -26,7 +28,7 @@ public class AccountService {
         if (optionalAccount.isPresent()) {
             httpSession.setAttribute("username", username);
             Account account = optionalAccount.get();
-            return password.equals(account.getPassword());
+            return passwordEncoder.matches(password, account.getPassword());
         } else {
             return false;
         }
@@ -43,7 +45,9 @@ public class AccountService {
 
     @Transactional
     public void register(String username, String password) {
-        Account account = new Account(username, password);
+        String hashedPassword = passwordEncoder.encode(password);
+
+        Account account = new Account(username, hashedPassword);
         accountRepository.save(account);
     }
 
