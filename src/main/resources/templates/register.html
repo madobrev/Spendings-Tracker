@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
@@ -7,7 +7,8 @@
 <body>
 <h1 id="pageTitle">Register for Spending Tracker</h1>
 <div id="registerFields">
-    <form action="/register" method="post" onsubmit="return checkIfPasswordsAreIdentical()">
+    <p style="color: red;" th:if="${errorMessage}">[[${errorMessage}]]</p>
+    <form action="/register" method="post">
         <label for="username">Username:</label><br>
         <input id="username" name="username" required type="text"><br>
         <label for="password">Password:</label><br>
@@ -17,19 +18,6 @@
         <button type="submit">Register</button>
     </form>
 </div>
-
-<script>
-    function checkIfPasswordsAreIdentical() {
-        var password = document.getElementById("password").value;
-        var repeatPassword = document.getElementById("repeatPassword").value;
-
-        if (password !== repeatPassword) {
-            alert("Passwords do not match");
-            return false;
-        }
-        return true;
-    }
-</script>
 
 </body>
 </html>
