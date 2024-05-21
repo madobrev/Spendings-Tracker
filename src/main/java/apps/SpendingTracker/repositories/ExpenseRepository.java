@@ -22,4 +22,21 @@ public interface ExpenseRepository extends CrudRepository<Expense, Long> {
     void deleteAllUserExpenses(Long accountId);
 
 
+    @Query("SELECT e FROM Expense e WHERE e.account.id = :accountId AND MONTH(e.date) = :month ORDER BY e.date ASC")
+    Optional<List<Expense>> getExpensesByUserAndMonthSortedByDateAscending(Long accountId, int month);
+
+    @Query("SELECT e FROM Expense e WHERE e.account.id = :accountId AND MONTH(e.date) = :month ORDER BY e.amount ASC")
+    Optional<List<Expense>> getExpensesByUserAndMonthSortedByAmountAscending(Long accountId, int month);
+
+    @Query("SELECT e FROM Expense e WHERE e.account.id = :accountId AND MONTH(e.date) = :month ORDER BY e.category ASC")
+    Optional<List<Expense>> getExpensesByUserAndMonthSortedByCategoryAscending(Long accountId, int month);
+
+    @Query("SELECT e FROM Expense e WHERE e.account.id = :accountId AND MONTH(e.date) = :month ORDER BY e.date DESC")
+    Optional<List<Expense>> getExpensesByUserAndMonthSortedByDateDescending(Long accountId, int month);
+
+    @Query("SELECT e FROM Expense e WHERE e.account.id = :accountId AND MONTH(e.date) = :month ORDER BY e.amount DESC")
+    Optional<List<Expense>> getExpensesByUserAndMonthSortedByAmountDescending(Long accountId, int month);
+
+    @Query("SELECT e FROM Expense e WHERE e.account.id = :accountId AND MONTH(e.date) = :month ORDER BY e.category DESC")
+    Optional<List<Expense>> getExpensesByUserAndMonthSortedByCategoryDescending(Long accountId, int month);
 }

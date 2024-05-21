@@ -40,6 +40,6 @@ public class ExpenseController {
     public String deleteExpenses(@RequestBody List<Long> expenseIds, Model model) {
 
         expenseService.deleteExpenses(expenseIds);
-        return "redirect:/dashboard";
+        return "redirect:/dashboard"; //TODO: change the redirect to the filtered month if one is present
     }
 }

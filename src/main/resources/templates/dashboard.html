@@ -41,6 +41,16 @@
         </select>
         <button type="submit">Change</button>
     </form>
+    <form action="/filterBy" id="filterBy" method="post">
+        <label for="filter">Filter By:</label>
+        <select id="filter" name="filter">
+            <option value="Date">Date</option>
+            <option value="Category">Category</option>
+            <option value="Amount">Amount</option>
+        </select>
+        <button name="ascending" type="submit">Filter Ascending</button>
+        <button name="descending" type="submit">Filter Descending</button>
+    </form>
     <div class="top-right-container">
         <a href="/logout" id="logout">
             <button>Logout</button>

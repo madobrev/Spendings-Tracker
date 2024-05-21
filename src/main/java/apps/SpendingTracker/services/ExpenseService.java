@@ -35,6 +35,21 @@ public class ExpenseService {
         return Optional.empty();
     }
 
+    public Optional<List<Expense>> filterExpenses(Long accountID, int month, String filter, boolean ascending) {
+
+        return switch (filter) {
+            case "Date":
+                yield ascending ? expenseRepository.getExpensesByUserAndMonthSortedByDateAscending(accountID, month) : expenseRepository.getExpensesByUserAndMonthSortedByDateDescending(accountID, month);
+            case "Category":
+                yield ascending ? expenseRepository.getExpensesByUserAndMonthSortedByCategoryAscending(accountID, month) : expenseRepository.getExpensesByUserAndMonthSortedByCategoryDescending(accountID, month);
+            case "Amount":
+                yield ascending ? expenseRepository.getExpensesByUserAndMonthSortedByAmountAscending(accountID, month) : expenseRepository.getExpensesByUserAndMonthSortedByAmountDescending(accountID, month);
+            default:
+                throw new IllegalStateException("Unexpected value: " + filter);
+        };
+    }
+
+
     public void addExpense(Expense expense, String categoryName) {
 
         expense.setAccount(accountService.getCurrentUser().orElse(null));
