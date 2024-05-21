@@ -55,15 +55,14 @@ public class DashboardController { //TODO: Create a dashboard service?
 
 
         int month = (int) httpSession.getAttribute("month");
+        boolean isAscending = ascending != null;
 
-        if (ascending != null) {
-            model.addAttribute("expenses", expenseService.filterExpenses(4L, month, filter, true));
-        } else {
-            model.addAttribute("expenses", expenseService.filterExpenses(4L, month, filter, false));
-        }
+
+        //TODO: change to the current user's ID instead of the hardcoded test user ID
+        model.addAttribute("expenses", expenseService.filterExpenses(4L, month, filter, isAscending).orElse(null));
 
         String username = (String) httpSession.getAttribute("username");
-        
+
         String displayMonth = Month.of(month).toString().toLowerCase();
         displayMonth = displayMonth.substring(0, 1).toUpperCase() + displayMonth.substring(1);
 

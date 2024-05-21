@@ -85,8 +85,9 @@
             <td th:text="${expense.category.name}"></td>
             <td th:text="${expense.amount}"></td>
             <td th:text="${expense.description}"></td>
-            <td><label for="expenseId"></label><input id="expenseId" name="expenseId" th:value="${expense.id}"
-                                                      type="checkbox"/></td>
+            <td><label for="expenseId"></label>
+                <input id="expenseId" name="expenseId" th:value="${expense.id}" type="checkbox"/>
+            </td>
         </tr>
         </tbody>
     </table>
