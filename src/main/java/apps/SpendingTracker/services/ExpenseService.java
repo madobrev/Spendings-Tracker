@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,14 +51,23 @@ public class ExpenseService {
         };
     }
 
+    public List<Expense> getExpensesByExpenseID(List<Long> expenseIds) {
+        List<Expense> expenses = new ArrayList<>();
+        for (Long expenseId : expenseIds) {
+            Optional<Expense> expense = expenseRepository.getExpenseByExpenseId(expenseId);
+            expense.ifPresent(expenses::add);
+        }
+        return expenses;
+    }
+
 
     public void addExpense(Expense expense, String categoryName) {
-
         expense.setAccount(accountService.getCurrentUser().orElse(null));
         Optional<Category> category = categoryService.getCategoryByName(categoryName);
         category.ifPresent(expense::setCategory);
         expenseRepository.save(expense);
     }
+
 
     @Transactional
     public void deleteExpenses(List<Long> expenseIDs) {
@@ -64,5 +75,20 @@ public class ExpenseService {
             expenseRepository.deleteById(expenseID);
         }
     }
+
+    @Transactional
+    public void updateExpenses(List<Expense> expenses) {
+
+        for (Expense expense : expenses) {
+            Long expenseId = expense.getId();
+            double amount = expense.getAmount();
+            Category category = expense.getCategory();
+            LocalDate date = expense.getDate();
+            String description = expense.getDescription();
+            expenseRepository.updateExpenses(expenseId, amount, category, date, description);
+
+        }
+    }
+
 
 }

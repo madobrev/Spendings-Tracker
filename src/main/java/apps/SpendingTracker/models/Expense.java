@@ -32,6 +32,13 @@ public class Expense {
         this.date = date;
     }
 
+    public Expense(Long id, double amount, String description, LocalDate date) {
+        this.id = id;
+        this.amount = amount;
+        this.description = description;
+        this.date = date;
+    }
+
     public Expense() {
     }
 

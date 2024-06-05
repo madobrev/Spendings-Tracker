@@ -33,6 +33,5 @@ public class WebPageController {
     public String changePassword() {
         return "change_password";
     }
-
 }
 

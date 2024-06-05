@@ -18,6 +18,20 @@
         .top-right-container button {
             margin-bottom: 5px;
         }
+        .expense-button {
+            display: block;
+            width: 100%;
+            margin-bottom: 2px;
+        }
+        .centered-table-element{
+            text-align: center;
+            vertical-align: middle;
+            padding: 0;
+        }
+        .centered-table-element input[type="checkbox"] {
+            margin: 0;
+            transform: scale(1.5);
+        }
     </style>
 </head>
 <body>
@@ -65,7 +79,7 @@
 </div>
 <div id="expenses">
     <h2>Expenses - <span th:text="${month}"></span></h2>
-    <table>
+    <table> <!-- TODO: Add border and column spacing inbetween-->
         <thead>
         <tr>
             <th>Date</th>
@@ -73,19 +87,28 @@
             <th>Amount</th>
             <th>Description</th>
             <th>
-                <form action="/deleteExpenses" id="deleteExpensesForm" method="post">
-                    <button id="deleteExpenses" type="submit">Delete Selected Expenses</button>
+                <form id="deleteOrEditExpensesForm" method="post">
+                    <input id="actionType" name="actionType" type="hidden" value="">
+                    <button class="expense-button" id="deleteExpenses" onclick="setActionType('delete')" type="submit">
+                        Delete
+                    </button>
+                    <button class="expense-button" id="editExpenses" onclick="setActionType('edit')" type="submit">
+                        Edit
+                    </button>
                 </form>
+            </th>
+            <th>
             </th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="expense : ${expenses}">
-            <td th:text="${#temporals.format(expense.date, 'dd.MM.yyyy')}"></td>
-            <td th:text="${expense.category.name}"></td>
-            <td th:text="${expense.amount}"></td>
-            <td th:text="${expense.description}"></td>
-            <td><label for="expenseId"></label>
+            <td class="centered-table-element" th:text="${#temporals.format(expense.date, 'dd.MM.yyyy')}"></td>
+            <td class="centered-table-element" th:text="${expense.category.name}"></td>
+            <td class="centered-table-element" th:text="${expense.amount}"></td>
+            <!-- TODO: Make the description field to not stretch horizontally, but create new rows instead vertically -->
+            <td class="centered-table-element" th:text="${expense.description}"></td>
+            <td class="centered-table-element"><label for="expenseId"></label>
                 <input id="expenseId" name="expenseId" th:value="${expense.id}" type="checkbox"/>
             </td>
         </tr>
@@ -98,14 +121,19 @@
     </a>
 </div>
 <script>
-    document.getElementById("deleteExpensesForm").addEventListener("submit", function (event) {
+    function setActionType(action) {
+        document.getElementById('actionType').value = action;
+    }
+
+    document.getElementById("deleteOrEditExpensesForm").addEventListener("submit", function (event) {
         event.preventDefault();
 
         var selectedExpenses = [];
         var checkboxes = document.querySelectorAll('input[name="expenseId"]:checked');
+        var actionType = document.getElementById('actionType').value;
 
         if (checkboxes.length === 0) {
-            alert("Please select expenses to delete.");
+            alert("Please select expenses to " + actionType + "!");
             return;
         }
 
@@ -113,13 +141,12 @@
             selectedExpenses.push(checkbox.value);
         });
 
-
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/deleteExpenses");
+        xhr.open("POST", actionType === "delete" ? "/deleteExpenses" : "/setExpensesToEdit");
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.onload = function () {
             if (xhr.status === 200) {
-                window.location.href = "/dashboard";
+                window.location.href = actionType === "delete" ? "/dashboard" : "/edit_expenses";
             } else {
                 console.error('Error:', xhr.responseText);
             }
@@ -127,6 +154,5 @@
         xhr.send(JSON.stringify(selectedExpenses));
     });
 </script>
-
 </body>
 </html>

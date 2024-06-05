@@ -10,4 +10,5 @@ public class SpendingTrackerApplication {
         SpringApplication.run(SpendingTrackerApplication.class, args);
     }
 
+
 }

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Expenses</title>
+    <style>
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Edit Expenses</h1>
+<form action="/applyEditExpenses" method="post">
+    <div th:each="expense : ${expenses}">
+        <input name="expenseIds" th:value="${expense.id}" type="hidden"/>
+        <label for="date">Date:</label>
+        <input id="date" name="date" required th:value="${expense.date}" type="date"><br><br>
+
+        <label for="amount">Amount:</label>
+        <input id="amount" min="0" name="amount" required step="0.01" th:value="${expense.amount}"
+               type="number"><br><br>
+
+        <label for="category">Category:</label>
+        <select id="category" name="category" required>
+            <option th:selected="${expense.category.name == 'Food'}" value="Food">Food</option>
+            <option th:selected="${expense.category.name == 'Household'}" value="Household">Household</option>
+            <option th:selected="${expense.category.name == 'Transportation'}" value="Transportation">Transportation
+            </option>
+            <option th:selected="${expense.category.name == 'Bills'}" value="Bills">Bills</option>
+            <option th:selected="${expense.category.name == 'Social Life'}" value="Social Life">Social Life</option>
+            <option th:selected="${expense.category.name == 'Health'}" value="Health">Health</option>
+            <option th:selected="${expense.category.name == 'Gift'}" value="Gift">Gift</option>
+            <option th:selected="${expense.category.name == 'Clothes'}" value="Clothes">Clothes</option>
+            <option th:selected="${expense.category.name == 'Beauty'}" value="Beauty">Beauty</option>
+        </select><br><br>
+
+        <label for="description">Description:</label><br>
+        <textarea cols="50" id="description" name="description" rows="4"
+                  th:text="${expense.description}"></textarea><br><br>
+    </div>
+    <button type="submit">Apply</button>
+    <a href="/dashboard">
+        <button type="button">Cancel</button>
+    </a>
+</form>
+</body>
+</html>
