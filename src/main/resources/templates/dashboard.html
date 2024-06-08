@@ -78,7 +78,8 @@
     </div>
 </div>
 <div id="expenses">
-    <h2>Expenses - <span th:text="${month}"></span></h2>
+    <h2 style="margin-bottom: 0;">Month: <span th:text="${month}"></span></h2>
+    <h2 style="margin-top: 0;">Filtered by: <span th:text="${filter}"></span></h2>
     <table> <!-- TODO: Add border and column spacing inbetween-->
         <thead>
         <tr>

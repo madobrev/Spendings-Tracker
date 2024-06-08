@@ -24,7 +24,9 @@ public class DashboardController { //TODO: Create a dashboard service?
     }
 
     @RequestMapping("/dashboard")
-    public ModelAndView dashboard(@RequestParam(required = false, defaultValue = "0") int month, Model model) {
+    public ModelAndView dashboard(@RequestParam(required = false, defaultValue = "0") int month,
+                                  @RequestParam(required = false, defaultValue = "Date ASC") String filterBy,
+                                  Model model) {
         String username = (String) httpSession.getAttribute("username");
 
 
@@ -40,6 +42,7 @@ public class DashboardController { //TODO: Create a dashboard service?
         model.addAttribute("username", username);
         model.addAttribute("expenses", expenseService.getAllExpensesForMonth(month).orElse(null));
         model.addAttribute("month", displayMonth);
+        model.addAttribute("filter", filterBy);
 
         return new ModelAndView("dashboard");
     }
@@ -68,6 +71,16 @@ public class DashboardController { //TODO: Create a dashboard service?
 
         model.addAttribute("month", displayMonth);
         model.addAttribute("username", username);
+
+        StringBuilder filterBy = new StringBuilder();
+        filterBy.append(filter);
+        if (isAscending) {
+            filterBy.append(" ASC");
+        } else {
+            filterBy.append(" DESC");
+        }
+        model.addAttribute("filter", filterBy.toString());
+
 
         return new ModelAndView("dashboard");
     }
